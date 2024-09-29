@@ -14,13 +14,10 @@ export const useOutsideClickClose = ({
 	useEffect(() => {
 		const handleClick = (event: MouseEvent) => {
 			const { target } = event;
-			// закрывать только если в состоянии "открыто"
 			if (
-				isOpen &&
 				target instanceof Node &&
 				!contentElements.find((node) => node.current?.contains(target))
 			) {
-				console.log('close!', isOpen);
 				onChange?.(false);
 			}
 		};
