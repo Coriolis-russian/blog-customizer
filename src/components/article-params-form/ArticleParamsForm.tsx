@@ -28,10 +28,12 @@ export const ArticleParamsForm = ({
 	defaultSettings,
 	applySettingsHandler,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setOpen] = useState(false);
+	const [isOpen, setOpen] = useState<boolean>(false);
 	const arrowBtnElementRef = useRef<HTMLDivElement>(null);
 	const panelElementRef = useRef<HTMLElement>(null);
-	const [settings, setSettings] = useState<ArticleStateType>(defaultSettings);
+	const [settings, setSettings] = useState<ArticleStateType>({
+		...defaultSettings,
+	});
 
 	useOutsideClickClose({
 		isOpen,
@@ -42,7 +44,10 @@ export const ArticleParamsForm = ({
 	function makeUpdateOptionHandler(
 		option: keyof ArticleStateType
 	): (value: OptionType) => void {
-		return (value) => setSettings({ ...settings, [option]: value });
+		return (value) =>
+			setSettings((prevState) => {
+				return { ...prevState, [option]: value };
+			});
 	}
 
 	return (
@@ -102,8 +107,8 @@ export const ArticleParamsForm = ({
 							htmlType='reset'
 							type='clear'
 							onClick={() => {
-								setSettings(defaultSettings);
-								applySettingsHandler(defaultSettings);
+								setSettings({ ...defaultSettings });
+								applySettingsHandler({ ...defaultSettings });
 							}}
 						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
